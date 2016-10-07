@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 import Avatar from 'material-ui/Avatar';
-import AccountCircle from 'material-ui/svg-icons/action/account-circle.js';
+import DomainIcon from 'material-ui/svg-icons/social/domain.js';
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 import LightbulbIcon from 'material-ui/svg-icons/action/lightbulb-outline';
@@ -11,13 +11,13 @@ import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
 import SmartSentencesList from './SmartSentencesList.js'
 import PersonDetails from './PersonDetails.js'
 
-class PersonContainer extends Component {
+class IndustryContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       activeTab: "a",
-      expanded:true
+      expanded:false
     };
 
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -40,7 +40,7 @@ class PersonContainer extends Component {
   render() {
     const styleAccountCircleAvatar = {'marginRight': 10};
     const AccountCircleAvatar = () => (
-      <Avatar icon={<AccountCircle />} size={40} style={styleAccountCircleAvatar} />
+      <Avatar icon={<DomainIcon />} size={20} style={styleAccountCircleAvatar} />
     );
 
     const styleTabsContainer = {'padding': '0 10px 0 10px'};
@@ -62,7 +62,7 @@ class PersonContainer extends Component {
     const styleCardText = {padding: 0};
     return (
       <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
-        <CardHeader title="Justin Mayle" subtitle="Marketing Manager"
+        <CardHeader title="eCommerce"
           avatar={<AccountCircleAvatar />} actAsExpander={true} showExpandableButton={true} />
         <CardText expandable={true} style={styleCardText}>
           {<TabsContainer />}
@@ -72,4 +72,4 @@ class PersonContainer extends Component {
   }
 }
 
-export default PersonContainer;
+export default IndustryContainer;

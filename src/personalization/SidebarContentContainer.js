@@ -9,7 +9,9 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MenuItem from 'material-ui/MenuItem';
 import {white} from 'material-ui/styles/colors';
 
-import PersonContainer from './PersonContainer.js';
+import PersonContainer from './PersonContainer.js'
+import OrganizationContainer from './OrganizationContainer.js';
+import IndustryContainer from './IndustryContainer.js';
 
 class SidebarContentContainer extends Component {
   constructor(props) {
@@ -22,11 +24,12 @@ class SidebarContentContainer extends Component {
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
         <MenuItem primaryText="Set Contact Details" />
+        <MenuItem primaryText="Share Contact"  />
         <MenuItem primaryText="Refresh" disabled={true}  />
       </IconMenu>
     );
 
-    const AppBarExampleIcon = () => (
+    const AppBarComponent = () => (
       <AppBar
         iconElementLeft={<IconButton><NavigationClose /></IconButton>}
         onLeftIconButtonTouchTap={() => {this.props.handleSidebarOpen(false)}}
@@ -36,8 +39,10 @@ class SidebarContentContainer extends Component {
 
     return (
       <div>
-        {AppBarExampleIcon()}
+        {AppBarComponent()}
         <PersonContainer />
+        <OrganizationContainer />
+        <IndustryContainer />
       </div>
     );
   }

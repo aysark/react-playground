@@ -9,7 +9,6 @@ import SidebarContentContainer from './personalization/SidebarContentContainer.j
 
 import logo from './logo.svg';
 import './App.css';
-import './ReactSidebar.css';
 
 class App extends Component {
   constructor() {
