@@ -15,18 +15,18 @@ class ReactSidebar extends Component {
   }
 
   render() {
-    debugger;
-    const sidebarContent = <b>Sidebar content</b>;
-    const sidebarProps = {
+    let sidebarContent = <b>Sidebar content</b>;
+    let sidebarProps = {
       sidebar: sidebarContent,
-      sidebarClassName: 'custom-sidebar-class',
-      open: this.props.open,
+      open: false,
       onSetOpen: this.onSetSidebarOpen,
+      docked: false,
+      shadow: false,
     };
 
     return (
       <Sidebar {...sidebarProps}>
-        <b>Main Content</b>
+        <b>TEST TESTING!</b>
       </Sidebar>
     )
   }

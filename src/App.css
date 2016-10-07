@@ -21,3 +21,9 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.Compose-button {
+  position: fixed;
+  left: 36px;
+  top: 36px;
+}
