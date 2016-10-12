@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './PersonContainer.css'
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 import Avatar from 'material-ui/Avatar';
@@ -38,9 +39,8 @@ class OrganizationContainer extends Component {
 
 
   render() {
-    const styleAccountCircleAvatar = {'marginRight': 10};
     const AccountCircleAvatar = () => (
-      <Avatar icon={<PeopleIcon />} size={20} style={styleAccountCircleAvatar} />
+      <Avatar icon={<PeopleIcon />} size={20} className='accountCircleAvatar' />
     );
 
     const styleTabsContainer = {'padding': '0 10px 0 10px'};

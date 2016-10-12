@@ -41,12 +41,6 @@ class App extends Component {
       shadow: true,
     };
 
-    const styleComposeButton = {
-      position: 'fixed',
-      left: '36px',
-      top: '36px',
-    };
-
     return (
       <MuiThemeProvider>
         <Sidebar {...sidebarProps}>
@@ -55,7 +49,7 @@ class App extends Component {
             <main id="pageWrapper">
               <div className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
-                <RaisedButton label="Compose" style={styleComposeButton}
+                <RaisedButton label="Compose" className='Compose-button'
                   onClick={this.onComposeButtonClick} />
               </div>
             </main>
