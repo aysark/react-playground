@@ -1,42 +1,131 @@
 import React, { Component } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton'; // TODO: remove
+import Snackbar from 'material-ui/Snackbar';
 import Sidebar from 'react-sidebar';
 import SidebarContentContainer from './personalization/SidebarContentContainer.js';
 
-import logo from './logo.svg';
+import logo from './logo.svg'; // TODO: remove
 import './App.css';
 
+import Client from './Client';
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      sidebarOpen: true
+      cancelSession: false,
+      sidebarOpen: false,
+      snackbarOpen: false,
+      snackbarMessage: 0,
+      recipientProfile: {},
     };
 
-    this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
-    this.onComposeButtonClick = this.onComposeButtonClick.bind(this);
+    this.recipientEmailTimer = undefined;  // TODO remove
+
+    this.handleComposeButtonClick = this.handleComposeButtonClick.bind(this);
+    this.handleCancelSession = this.handleCancelSession.bind(this);
+
+    this.handleSnackbarActionTouchTap = this.handleSnackbarActionTouchTap.bind(this);
+    this.handleSnackbarRequestClose = this.handleSnackbarRequestClose.bind(this);
+    this.getSnackbarMessage = this.getSnackbarMessage.bind(this);
+    this.handleSidebarOpenChange = this.handleSidebarOpenChange.bind(this);
+
+    this.getPerson = this.getPerson.bind(this);
   }
 
-  onComposeButtonClick(e) {
-    this.setState({ sidebarOpen: true});
+  componentWillUnMount() {
+    clearTimeout(this.recipientEmailTimer);
   }
 
-  handleSidebarOpen(open) {
-    this.setState({sidebarOpen:open});
+  getPerson() {
+    Client.getPerson(this.state.recipientProfile.email, (profile) => {
+      if (profile === -1) {
+        this.handleCancelSession(2);
+        this.setState({
+          snackbarOpen:true,
+        });
+        return;
+      }
+
+      this.setState({
+        sidebarOpen: true,
+        recipientProfile: profile,
+      });
+    });
+  }
+
+  handleComposeButtonClick(e) {
+    this.setState({
+      cancelSession: false,
+      sidebarOpen: false,
+      snackbarOpen: true,
+      snackbarMessage: 0,
+      recipientProfile: {},
+    });
+
+    // we need to keep checking for once user has entered a recipient email
+    // for now we just use a timeout to demo
+    this.recipientEmailTimer = setTimeout(() => {
+      // once we get a recipient email, we update state and message that we
+      // are going to start fetching recipient profile and smart sentences
+      if (!this.state.cancelSession) {
+        this.setState({
+          recipientProfile: {email:"ak@akpro.net"},
+          // TODO enable in prod and update autiHideDuration times
+          // snackbarMessage: 1,
+        });
+
+        this.getPerson();
+      }
+    }, 1500);
+  }
+
+  handleSnackbarActionTouchTap() {
+    this.handleCancelSession();
+  }
+
+  handleSnackbarRequestClose() {
+    this.setState({
+      snackbarOpen: false,
+    });
+  }
+
+  handleSidebarOpenChange(state) {
+    if (state && !this.state.cancelSession) {
+      this.getPerson();
+    } else if (!state) {
+      this.handleCancelSession();
+      this.setState({sidebarOpen:state});
+    }
   }
 
   render() {
+    const snackbarProps = {
+      open: this.state.snackbarOpen,
+      message: this.getSnackbarMessage(this.state.snackbarMessage),
+      action: "Not Now",
+      onActionTouchTap: this.handleSnackbarActionTouchTap,
+      autoHideDuration: 1000,
+      onRequestClose: this.handleSnackbarRequestClose,
+    }
+
+    const sidebarContentContainerProps = {
+      handleSidebarOpenChange: this.handleSidebarOpenChange,
+      recipient: this.state.recipientProfile,
+      sender: this.state.senderProfile,
+    };
+
     const sidebarProps = {
-      sidebar: <SidebarContentContainer handleSidebarOpen={this.handleSidebarOpen} />,
+      sidebar: <SidebarContentContainer {...sidebarContentContainerProps} />,
       sidebarClassName: 'custom-sidebar-class',
       pullRight: true,
       open: false,
-      onSetOpen: this.handleSidebarOpen,
+      onSetOpen: this.handleSidebarOpenChange,
       docked: this.state.sidebarOpen,
       shadow: true,
     };
@@ -50,14 +139,37 @@ class App extends Component {
               <div className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <RaisedButton label="Compose" className='Compose-button'
-                  onClick={this.onComposeButtonClick} />
+                  onClick={this.handleComposeButtonClick} />
               </div>
             </main>
           </div>
 
+          <Snackbar {...snackbarProps} />
         </Sidebar>
       </MuiThemeProvider>
     );
+  }
+
+  handleCancelSession(messageCode=this.state.messageCode) {
+    this.setState({
+      cancelSession:true,
+      sidebarOpen:false,
+      snackbarOpen: false,
+      snackbarMessage: messageCode,
+      recipientProfile: {},
+    });
+  }
+
+  getSnackbarMessage(code) {
+    switch (code) {
+      case 2:
+        return 'EFX -  Could not fetch recipient profile';
+      case 1:
+        return 'EFX -  Loading';
+      case 0:
+      default:
+        return 'EFX - Enter a recipient email to get started';
+    }
   }
 }
 

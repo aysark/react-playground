@@ -13,10 +13,6 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
 class SmartSentencesList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const iconButtonElement = (
       <IconButton touch={true}>

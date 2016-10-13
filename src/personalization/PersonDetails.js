@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
 
-import ActionHome from 'material-ui/svg-icons/action/home';
-
 class PersonDetails extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>

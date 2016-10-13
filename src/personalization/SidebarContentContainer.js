@@ -14,10 +14,6 @@ import OrganizationContainer from './OrganizationContainer.js';
 import IndustryContainer from './IndustryContainer.js';
 
 class SidebarContentContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const AdditionalOptions = (props) => (
       <IconMenu iconButtonElement={<IconButton><MoreVertIcon color={white} /></IconButton>}
@@ -32,7 +28,7 @@ class SidebarContentContainer extends Component {
     const AppBarComponent = () => (
       <AppBar
         iconElementLeft={<IconButton><NavigationClose /></IconButton>}
-        onLeftIconButtonTouchTap={() => {this.props.handleSidebarOpen(false)}}
+        onLeftIconButtonTouchTap={() => {this.props.handleSidebarOpenChange(false)}}
         iconElementRight={<AdditionalOptions />}
       />
     );
