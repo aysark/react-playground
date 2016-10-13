@@ -16,8 +16,6 @@ import IndustryContainer from './IndustryContainer.js';
 class SidebarContentContainer extends Component {
   constructor(props) {
     super(props);
-
-
   }
 
   render() {

@@ -1,11 +1,14 @@
 function getPerson(email, cb) {
   return fetch(`api/person?email=${email}`, {
-    accept: 'application/json',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
   }).then(checkStatus)
     .then(parseJSON)
     .then(cb)
     .catch(function(error) {
-      console.error('EFX - Request failed: ', error);
+      // console.error('EFX - Request failed: ', error);
       // cb(-1); // for prod
 
       // for frontend dev
@@ -14,6 +17,22 @@ function getPerson(email, cb) {
         currentPosition: 'Software Engineer',
         email: 'ak@akpro.net',
       });
+    });
+}
+
+function newSmartSentences(input, cb) {
+  return fetch(`api/smartsentences`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: input
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb)
+    .catch(function(error) {
+      cb(-1);
     });
 }
 
@@ -33,5 +52,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = { getPerson };
+const Client = { getPerson, newSmartSentences };
 export default Client;
