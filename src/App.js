@@ -22,7 +22,7 @@ class App extends Component {
       sidebarOpen: false,
       snackbarOpen: false,
       snackbarMessage: 0,
-      recipientProfile: {},
+      recipient: {},
     };
 
     this.recipientEmailTimer = undefined;  // TODO remove
@@ -43,7 +43,7 @@ class App extends Component {
   }
 
   getPerson() {
-    Client.getPerson(this.state.recipientProfile.email, (profile) => {
+    Client.getPerson(this.state.recipient.email, (profile) => {
       if (profile === -1) {
         this.handleCancelSession(2);
         this.setState({
@@ -54,7 +54,7 @@ class App extends Component {
 
       this.setState({
         sidebarOpen: true,
-        recipientProfile: profile,
+        recipient: profile,
       });
     });
   }
@@ -65,7 +65,7 @@ class App extends Component {
       sidebarOpen: false,
       snackbarOpen: true,
       snackbarMessage: 0,
-      recipientProfile: {},
+      recipient: {},
     });
 
     // we need to keep checking for once user has entered a recipient email
@@ -75,7 +75,7 @@ class App extends Component {
       // are going to start fetching recipient profile and smart sentences
       if (!this.state.cancelSession) {
         this.setState({
-          recipientProfile: {email:"ak@akpro.net"},
+          recipient: {email:"ak@akpro.net"},
           // TODO enable in prod and update autiHideDuration times
           // snackbarMessage: 1,
         });
@@ -116,8 +116,8 @@ class App extends Component {
 
     const sidebarContentContainerProps = {
       handleSidebarOpenChange: this.handleSidebarOpenChange,
-      recipient: this.state.recipientProfile,
-      sender: this.state.senderProfile,
+      recipient: this.state.recipient,
+      sender: this.props.sender,
     };
 
     const sidebarProps = {
@@ -156,7 +156,7 @@ class App extends Component {
       sidebarOpen:false,
       snackbarOpen: false,
       snackbarMessage: messageCode,
-      recipientProfile: {},
+      recipient: {},
     });
   }
 
@@ -170,6 +170,14 @@ class App extends Component {
       default:
         return 'EFX - Enter a recipient email to get started';
     }
+  }
+}
+
+App.defaultProps = {
+  sender: {
+    name: 'Aysar K',
+    currentPosition: 'Software Engineer',
+    email: 'ak@akpro.net',
   }
 }
 

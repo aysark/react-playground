@@ -1,5 +1,5 @@
-function getPerson(query, cb) {
-  return fetch(`api/person?email=${query}`, {
+function getPerson(email, cb) {
+  return fetch(`api/person?email=${email}`, {
     accept: 'application/json',
   }).then(checkStatus)
     .then(parseJSON)
@@ -11,7 +11,7 @@ function getPerson(query, cb) {
       // for frontend dev
       cb({
         name: 'Aysar K',
-        position: 'Software Engineer',
+        currentPosition: 'Software Engineer',
         email: 'ak@akpro.net',
       });
     });

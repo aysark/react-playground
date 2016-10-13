@@ -56,7 +56,7 @@ class PersonContainer extends Component {
 
     return (
       <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
-        <CardHeader title="Justin Mayle" subtitle="Marketing Manager"
+        <CardHeader title={this.props.recipient.name} subtitle={this.props.recipient.currentPosition}
           avatar={<AccountCircleAvatar />} actAsExpander={true} showExpandableButton={true} />
         <CardText expandable={true} className='cardText'>
           {<TabsContainer />}

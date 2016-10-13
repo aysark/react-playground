@@ -14,6 +14,12 @@ import OrganizationContainer from './OrganizationContainer.js';
 import IndustryContainer from './IndustryContainer.js';
 
 class SidebarContentContainer extends Component {
+  constructor(props) {
+    super(props);
+
+
+  }
+
   render() {
     const AdditionalOptions = (props) => (
       <IconMenu iconButtonElement={<IconButton><MoreVertIcon color={white} /></IconButton>}
@@ -33,10 +39,14 @@ class SidebarContentContainer extends Component {
       />
     );
 
+    const personContainerProps = {
+      recipient: this.props.recipient
+    }
+
     return (
       <div>
         {AppBarComponent()}
-        <PersonContainer />
+        <PersonContainer {...personContainerProps} />
         <OrganizationContainer />
         <IndustryContainer />
       </div>
