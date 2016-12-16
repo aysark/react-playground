@@ -38,7 +38,9 @@ class SidebarContentContainer extends Component {
     );
 
     const personContainerProps = {
-      recipient: this.props.recipient
+      recipient: this.props.recipient,
+      insights: this.props.personInsights,
+      signals: this.props.personSignals,
     }
 
     return (

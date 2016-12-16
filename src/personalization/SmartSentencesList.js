@@ -13,6 +13,10 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
 class SmartSentencesList extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const iconButtonElement = (
       <IconButton touch={true}>
@@ -38,27 +42,42 @@ class SmartSentencesList extends Component {
       </IconMenu>
     );
 
+    let listItems = [];
+    if (this.props.signals) {
+      this.props.signals.forEach((e, i, a) => {
+        if (e.sentences) {
+          listItems.push(<ListItem
+              leftAvatar={<Avatar icon={<SchoolIcon />} backgroundColor={blue500} />}
+              rightIconButton={rightIconMenu}
+              primaryText={e.name}
+              secondaryText={e.sentences.professional}
+              secondaryTextLines={2}
+              key={e._id}
+            />);
+            listItems.push(<Divider inset={false} />);
+        }
+      });
+    }
+
+    if (this.props.insights) {
+      this.props.insights.forEach((e, i, a) => {
+        if (e.sentences) {
+          listItems.push(<ListItem
+              leftAvatar={<Avatar icon={<SchoolIcon />} backgroundColor={blue500} />}
+              rightIconButton={rightIconMenu}
+              primaryText={e.name}
+              secondaryText={e.sentences.professional}
+              secondaryTextLines={2}
+              key={e._id}
+            />);
+          listItems.push(<Divider key={e._id+'-divider'} inset={false} />);
+        }
+      });
+    }
+
     return(
       <List>
-        <ListItem
-          leftAvatar={<Avatar icon={<SchoolIcon />} backgroundColor={blue500} />}
-          rightIconButton={rightIconMenu}
-          primaryText="Education Similarity"
-          secondaryText={
-            <p>I saw that we both went to York University! Thats awesome, how did you like it?</p>
-          }
-          secondaryTextLines={1}
-        />
-        <Divider inset={false} />
-        <ListItem
-          leftAvatar={<Avatar icon={<CakeIcon />} backgroundColor={purpleA200} />}
-          rightIconButton={rightIconMenu}
-          primaryText="Special Day"
-          secondaryText={
-            <p>Happy birthday Justin!</p>
-          }
-          secondaryTextLines={1}
-        />
+        {listItems}
       </List>
     );
   }

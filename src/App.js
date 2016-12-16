@@ -11,7 +11,7 @@ import SidebarContentContainer from './personalization/SidebarContentContainer.j
 import logo from './logo.svg'; // TODO: remove
 import './App.css';
 
-import Client from './Client';
+import PersonClient from './PersonClient';
 
 class App extends Component {
   constructor(props) {
@@ -23,6 +23,8 @@ class App extends Component {
       snackbarOpen: false,
       snackbarMessage: 0,
       recipient: {},
+      personInsights: undefined,
+      personSignals: undefined,
     };
 
     this.recipientEmailTimer = undefined;  // TODO remove
@@ -35,16 +37,16 @@ class App extends Component {
     this.getSnackbarMessage = this.getSnackbarMessage.bind(this);
     this.handleSidebarOpenChange = this.handleSidebarOpenChange.bind(this);
 
-    this.getPerson = this.getPerson.bind(this);
+    this.searchPersonByEmail = this.searchPersonByEmail.bind(this);
   }
 
   componentWillUnMount() {
     clearTimeout(this.recipientEmailTimer);
   }
 
-  getPerson() {
-    Client.getPerson(this.state.recipient.email, (profile) => {
-      if (profile === -1) {
+  searchPersonByEmail() {
+    PersonClient.searchPersonByEmail(this.state.recipient.email, (person) => {
+      if (person === -1) {
         this.handleCancelSession(2);
         this.setState({
           snackbarOpen:true,
@@ -54,8 +56,22 @@ class App extends Component {
 
       this.setState({
         sidebarOpen: true,
-        recipient: profile,
+        recipient: person,
       });
+
+      // Begin fetching recipient discoveries
+      PersonClient.getSignals(person.id, (results) => {
+        this.setState({
+          personSignals: results
+        });
+      });
+
+      PersonClient.getInsights(person.id, (results) => {
+        this.setState({
+          personInsights: results
+        });
+      });
+
     });
   }
 
@@ -80,7 +96,7 @@ class App extends Component {
           // snackbarMessage: 1,
         });
 
-        this.getPerson();
+        this.searchPersonByEmail();
       }
     }, 1500);
   }
@@ -110,13 +126,15 @@ class App extends Component {
       message: this.getSnackbarMessage(this.state.snackbarMessage),
       action: "Not Now",
       onActionTouchTap: this.handleSnackbarActionTouchTap,
-      autoHideDuration: 1000,
+      autoHideDuration: 4000,
       onRequestClose: this.handleSnackbarRequestClose,
     }
 
     const sidebarContentContainerProps = {
       handleSidebarOpenChange: this.handleSidebarOpenChange,
       recipient: this.state.recipient,
+      personInsights: this.state.personInsights,
+      personSignals: this.state.personSignals,
       sender: this.props.sender,
     };
 
@@ -163,7 +181,7 @@ class App extends Component {
   getSnackbarMessage(code) {
     switch (code) {
       case 2:
-        return 'EFX -  Could not fetch recipient profile';
+        return 'EFX -  Could not fetch recipient';
       case 1:
         return 'EFX -  Loading';
       case 0:
